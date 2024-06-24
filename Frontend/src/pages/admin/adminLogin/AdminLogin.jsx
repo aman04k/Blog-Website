@@ -26,22 +26,23 @@ export default function AdminLogin() {
         profilePicture: null,
     });
 
+    const [isEditingProfile, setIsEditingProfile] = useState(false);
+
     const login = async () => {
-        if(!email || !password) {
-            return toast.error("All fields are required")
+        if (!email || !password) {
+            return toast.error("All fields are required");
         }
 
         try {
             const result = await signInWithEmailAndPassword(auth, email, password);
-            toast.success("Login successful")
+            toast.success("Login successful");
             localStorage.setItem("admin", JSON.stringify(result));
-            navigate('/dashboard')
+            navigate('/dashboard');
         } catch (error) {
-            console.log(error)
-            toast.error("Login failed")
+            console.log(error);
+            toast.error("Login failed");
         }
-
-    }
+    };
 
     const handleProfileChange = (e) => {
         const { name, value, files } = e.target;
@@ -49,22 +50,22 @@ export default function AdminLogin() {
             ...prevState,
             [name]: files ? files[0] : value
         }));
-    }
+    };
 
     const handleProfileSubmit = (e) => {
         e.preventDefault();
         // Handle profile update logic here
         toast.success("Profile updated successfully");
-    }
+    };
 
     useEffect(() => {
-        window.scrollTo(0, 0)
-    }, [])
+        window.scrollTo(0, 0);
+    }, []);
 
     const cardStyle = {
         background: mode === 'dark' ? 'rgb(30, 41, 59)' : 'rgb(226, 232, 240)'
     };
-    
+
     const headerStyle = {
         background: mode === 'dark' ? 'rgb(226, 232, 240)' : 'rgb(30, 41, 59)'
     };
@@ -79,8 +80,7 @@ export default function AdminLogin() {
     };
 
     return (
-        <div className="flex flex-col items-center h-screen justify-evenly">
-            {/* Login Section */}
+        <div className="flex justify-center items-center h-screen">
             <Card
                 className="w-full max-w-[24rem]"
                 style={cardStyle}
@@ -98,134 +98,127 @@ export default function AdminLogin() {
                         </div>
                     </div>
                     <Typography variant="h4" style={textStyle}>
-                        Admin Login
+                        {isEditingProfile ? "Edit Profile" : "Admin Login"}
                     </Typography>
                 </CardHeader>
                 <CardBody>
-                    <form className="flex flex-col gap-4">
-                        <div>
-                            <Input
-                                type="email"
-                                label="Email"
-                                name="email"
-                                value={email}
-                                onChange={(e) => setEmail(e.target.value)}
-                            />
-                        </div>
-                        <div>
-                            <Input
-                                type="password"
-                                label="Password"
-                                value={password}
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                        </div>
-                        <Button
-                            onClick={login}
-                            style={buttonStyle}
-                        >
-                            Login
-                        </Button>
-                    </form>
+                    {isEditingProfile ? (
+                        <form onSubmit={handleProfileSubmit} className="flex flex-col gap-4">
+                            <div>
+                                <label>Profile Picture:</label>
+                                <input
+                                    type="file"
+                                    name="profilePicture"
+                                    onChange={handleProfileChange}
+                                    style={{
+                                        padding: '10px',
+                                        border: '1px solid #ccc',
+                                        borderRadius: '5px',
+                                        marginBottom: '10px'
+                                    }}
+                                />
+                            </div>
+                            <div>
+                                <Input
+                                    type="text"
+                                    label="Name"
+                                    name="name"
+                                    value={profileData.name}
+                                    onChange={handleProfileChange}
+                                    style={{
+                                        padding: '10px',
+                                        border: '1px solid #ccc',
+                                        borderRadius: '5px',
+                                        marginBottom: '10px'
+                                    }}
+                                />
+                            </div>
+                            <div>
+                                <Input
+                                    type="date"
+                                    label="Birthdate"
+                                    name="birthdate"
+                                    value={profileData.birthdate}
+                                    onChange={handleProfileChange}
+                                    style={{
+                                        padding: '10px',
+                                        border: '1px solid #ccc',
+                                        borderRadius: '5px',
+                                        marginBottom: '10px'
+                                    }}
+                                />
+                            </div>
+                            <div>
+                                <Input
+                                    type="tel"
+                                    label="Phone"
+                                    name="phone"
+                                    value={profileData.phone}
+                                    onChange={handleProfileChange}
+                                    style={{
+                                        padding: '10px',
+                                        border: '1px solid #ccc',
+                                        borderRadius: '5px',
+                                        marginBottom: '10px'
+                                    }}
+                                />
+                            </div>
+                            <Button
+                                type="submit"
+                                style={{
+                                    padding: '10px 20px',
+                                    border: 'none',
+                                    borderRadius: '5px',
+                                    backgroundColor: '#4CAF50',
+                                    color: '#fff',
+                                    cursor: 'pointer',
+                                    marginBottom: '10px'
+                                }}
+                            >
+                                Update Profile
+                            </Button>
+                            <Button
+                                onClick={() => setIsEditingProfile(false)}
+                                style={buttonStyle}
+                            >
+                                Back to Login
+                            </Button>
+                        </form>
+                    ) : (
+                        <form className="flex flex-col gap-4">
+                            <div>
+                                <Input
+                                    type="email"
+                                    label="Email"
+                                    name="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                />
+                            </div>
+                            <div>
+                                <Input
+                                    type="password"
+                                    label="Password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                />
+                            </div>
+                            <Button
+                                onClick={login}
+                                style={buttonStyle}
+                            >
+                                Login
+                            </Button>
+                            <Button
+                                onClick={() => setIsEditingProfile(true)}
+                                style={buttonStyle}
+                            >
+                                Edit Profile
+                            </Button>
+                        </form>
+                    )}
                 </CardBody>
             </Card>
-
-            {/* Profile Edit Section */}
-            <div style={{
-                maxWidth: '500px',
-                margin: '40px auto',
-                padding: '20px',
-                backgroundColor: '#f0f0f0',
-                border: '1px solid #ccc',
-                borderRadius: '10px',
-                boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)'
-            }}>
-                <h1 style={{ marginTop: 0 }}>Edit Profile</h1>
-                <form onSubmit={handleProfileSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                    <label htmlFor="profilePicture" style={{ marginBottom: '10px' }}>Profile Picture:</label>
-                    <input
-                        type="file"
-                        name="profilePicture"
-                        onChange={handleProfileChange}
-                        style={{
-                            padding: '10px',
-                            border: '1px solid #ccc',
-                            borderRadius: '5px',
-                            marginBottom: '10px'
-                        }}
-                    />
-                    <label htmlFor="name" style={{ marginBottom: '10px' }}>Name:</label>
-                    <input
-                        type="text"
-                        name="name"
-                        value={profileData.name}
-                        onChange={handleProfileChange}
-                        style={{
-                            padding: '10px',
-                            border: '1px solid #ccc',
-                            borderRadius: '5px',
-                            width: '100%',
-                            marginBottom: '10px'
-                        }}
-                    />
-                    <label htmlFor="birthdate" style={{ marginBottom: '10px' }}>Birthdate:</label>
-                    <input
-                        type="date"
-                        name="birthdate"
-                        value={profileData.birthdate}
-                        onChange={handleProfileChange}
-                        style={{
-                            padding: '10px',
-                            border: '1px solid #ccc',
-                            borderRadius: '5px',
-                            width: '100%',
-                            marginBottom: '10px'
-                        }}
-                    />
-                    <label htmlFor="phone" style={{ marginBottom: '10px' }}>Phone:</label>
-                    <input
-                        type="tel"
-                        name="phone"
-                        value={profileData.phone}
-                        onChange={handleProfileChange}
-                        style={{
-                            padding: '10px',
-                            border: '1px solid #ccc',
-                            borderRadius: '5px',
-                            width: '100%',
-                            marginBottom: '10px'
-                        }}
-                    />
-                    <label htmlFor="email" style={{ marginBottom: '10px' }}>Email:</label>
-                    <input
-                        type="email"
-                        name="email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        style={{
-                            padding: '10px',
-                            border: '1px solid #ccc',
-                            borderRadius: '5px',
-                            width: '100%',
-                            marginBottom: '10px'
-                        }}
-                    />
-                    <button
-                        type="submit"
-                        style={{
-                            padding: '10px 20px',
-                            border: 'none',
-                            borderRadius: '5px',
-                            backgroundColor: '#4CAF50',
-                            color: '#fff',
-                            cursor: 'pointer',
-                            marginBottom: '10px'
-                        }}
-                    >
-                        Update Profile
-                    </button>
-                </form>
-            </div>
         </div>
     );
 }
