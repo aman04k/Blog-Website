@@ -1,8 +1,8 @@
+import React from 'react';
 import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate,
 } from "react-router-dom";
 import Home from "./pages/home/Home";
 import Blog from "./pages/blog/Blog";
@@ -10,6 +10,10 @@ import AllBlogs from "./pages/allBlogs/AllBlogs";
 import NoPage from "./pages/nopage/NoPage";
 import BlogInfo from "./pages/blogInfo/BlogInfo";
 import AdminLogin from "./pages/admin/adminLogin/AdminLogin";
+import Profile from "./pages/admin/adminLogin/Profile";
+import ProfileEdit from "./pages/admin/adminLogin/ProfileEdit";
+import ForgotPassword from "./pages/admin/adminLogin/ForgotPassword";
+import Signup from "./pages/admin/adminLogin/Signup";
 import Dashboard from "./pages/admin/dashboard/Dashboard";
 import MyState from "./context/data/myState";
 import { Toaster } from "react-hot-toast";
@@ -25,6 +29,10 @@ function App() {
           <Route path="/allblogs" element={<AllBlogs />} />
           <Route path="/bloginfo/:id" element={<BlogInfo />} />
           <Route path="/adminlogin" element={<AdminLogin />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/profileedit" element={<ProfileEdit />} />
+          <Route path="/forgotpassword" element={<ForgotPassword />} />
+          <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={
             <ProtectedRouteForAdmin>
               <Dashboard />
@@ -37,20 +45,19 @@ function App() {
           } />
           <Route path="/*" element={<NoPage />} />
         </Routes>
-        <Toaster/>
+        <Toaster />
       </Router>
     </MyState>
-  )
+  );
 }
 
-export default App
+export default App;
 
 export const ProtectedRouteForAdmin = ({ children }) => {
-  const admin = JSON.parse(localStorage.getItem('admin'))
+  const admin = JSON.parse(localStorage.getItem('admin'));
   if (admin?.user?.email === "aman@gmail.com") {
-    return children
+    return children; // Render the protected content if admin is authenticated
+  } else {
+    return <Navigate to={'/adminlogin'} />; // Redirect to admin login if not authenticated
   }
-  else {
-    return <Navigate to={'/adminlogin'}/>
-  }
-}
+};
