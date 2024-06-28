@@ -106,8 +106,8 @@ export default function ProfileEdit() {
             <div style={headerStyle}>Profile Edit</div>
             <div style={profileImageContainerStyle}>
                 <img
-                    src={profileData.profilePicture ? 
-                        (profileData.profilePicture instanceof File ? URL.createObjectURL(profileData.profilePicture) : profileData.profilePicture) : 
+                    src={profileData.profilePicture ?
+                        (profileData.profilePicture instanceof File ? URL.createObjectURL(profileData.profilePicture) : profileData.profilePicture) :
                         defaultProfileIcon}
                     alt="Profile"
                     style={profileImageStyle}
@@ -126,6 +126,7 @@ export default function ProfileEdit() {
                 <Input
                     type="text"
                     label="First Name"
+                    placeholder='Enter your name'
                     name="firstName"
                     value={profileData.firstName}
                     onChange={handleProfileChange}
@@ -136,6 +137,7 @@ export default function ProfileEdit() {
                 <Input
                     type="text"
                     label="Last Name"
+                    placeholder='Enter your last name'
                     name="lastName"
                     value={profileData.lastName}
                     onChange={handleProfileChange}
@@ -156,6 +158,7 @@ export default function ProfileEdit() {
                 <Input
                     type="tel"
                     label="Phone"
+                    placeholder='Enter your phone number'
                     name="phone"
                     value={profileData.phone}
                     onChange={handleProfileChange}
@@ -166,6 +169,7 @@ export default function ProfileEdit() {
                 <Input
                     type="email"
                     label="Email"
+                    placeholder='Enter your email'
                     name="email"
                     value={profileData.email}
                     onChange={handleProfileChange}
