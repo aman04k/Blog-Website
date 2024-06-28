@@ -2,10 +2,13 @@ import { Button } from '@material-tailwind/react'
 import React, { useContext } from 'react'
 import myContext from '../../context/data/myContext';
 import { useNavigate } from 'react-router';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
+import { blogContext } from '../../context/data/useBlogData';
 
 function BlogPostCard() {
   const context = useContext(myContext);
+  const {blogs, setBlogs} = useContext(blogContext);
+  console.log(blogs);
   const { mode, getAllBlog } = context;
   // console.log(getAllBlog)
 
@@ -19,12 +22,12 @@ function BlogPostCard() {
           {/* Main Content  */}
           <div className="flex flex-wrap justify-center -m-4 mb-5">
             {/* Card 1  */}
-            {getAllBlog.length > 0
-              ? <> {getAllBlog.map((item, index) => {
+            {blogs.length > 0
+              ? <> {blogs.map((item, index) => {
                 console.log(item)
-                const {thumbnail, date, id} = item
+                const {thumbnail, date, _id} = item
                 return (
-                  <div className="p-4 md:w-1/3" >
+                  <NavLink to={`/bloginfo/${item._id}`} className="p-4 md:w-1/3" >
                     <div
                       style={{
                         background: mode === 'dark'
@@ -39,12 +42,12 @@ function BlogPostCard() {
                ${mode === 'dark'
                           ? 'shadow-gray-700'
                           : 'shadow-xl'
-                        } 
+                        }
                rounded-xl overflow-hidden`}
                     >
                       {/* Blog Thumbnail  */}
-                      <img 
-                      onClick={()=> navigate(`/bloginfo/${id}`)}
+                      <img
+                      onClick={()=> navigate(`/bloginfo/${_id}`)}
                       className=" w-full" src={thumbnail} alt="blog" />
 
                       {/* Top Items  */}
@@ -64,7 +67,7 @@ function BlogPostCard() {
                             ? 'rgb(226, 232, 240)'
                             : ' rgb(30, 41, 59)'
                         }}>
-                          {item.blogs.title}
+                          {item.title}
                         </h1>
 
                         {/* Blog Description  */}
@@ -77,7 +80,7 @@ function BlogPostCard() {
                         </p>
                       </div>
                     </div>
-                  </div>
+                  </NavLink>
                 )
               })} </>
               : <> <h1>Not Found</h1></>}

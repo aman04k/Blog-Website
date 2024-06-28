@@ -2,11 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import myContext from '../../context/data/myContext';
 import Layout from '../../components/layout/Layout';
 import { useNavigate } from 'react-router-dom';
+import { blogContext } from '../../context/data/useBlogData';
 
 const categories = ['All', 'Sports', 'Technical', 'Travel', 'History'];
 
 function AllBlogs() {
     const context = useContext(myContext);
+    const {blogs, setBlogs} = useContext(blogContext);
+    console.log(blogs);
     const { mode, getAllBlog } = context;
     const [selectedCategory, setSelectedCategory] = useState('All');
     const [filteredBlogs, setFilteredBlogs] = useState([]);

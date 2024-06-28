@@ -7,12 +7,17 @@ import Loader from '../../components/loader/Loader';
 import Layout from '../../components/layout/Layout';
 import Comment from '../../components/comment/Comment';
 import toast from 'react-hot-toast';
+import { blogContext } from '../../context/data/useBlogData';
 
 function BlogInfo() {
   const context = useContext(myContext);
   const { mode, loading, setloading } = context;
+  const {blogs} = useContext(blogContext);
 
-  const params = useParams();
+
+  const {id} = useParams();
+ const blog = blogs.find(blog => blog._id === Number(id));
+ console.log(blog);
   // console.log(params.id),
 
   const [getBlogs, setGetBlogs] = useState();
@@ -20,7 +25,7 @@ function BlogInfo() {
   const getAllBlogs = async () => {
     setloading(true);
     try {
-      const productTemp = await getDoc(doc( "blogPost", params.id))
+      const productTemp = await getDoc(( "blogPost", params.id))
       if (productTemp.exists()) {
         setGetBlogs(productTemp.data());
       } else {

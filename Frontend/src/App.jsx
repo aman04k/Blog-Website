@@ -18,10 +18,12 @@ import Dashboard from "./pages/admin/dashboard/Dashboard";
 import MyState from "./context/data/myState";
 import { Toaster } from "react-hot-toast";
 import CreateBlog from "./pages/admin/createBlog/CreateBlog";
+import { BlogProvider } from './context/data/useBlogData';
 
 function App() {
   return (
     <MyState>
+      <BlogProvider>
       <Router>
         <Routes>
           <Route path="/" element={<Home />} />
@@ -47,6 +49,7 @@ function App() {
         </Routes>
         <Toaster />
       </Router>
+      </BlogProvider>
     </MyState>
   );
 }
