@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import myContext from '../../context/data/myContext'
 import { useParams } from 'react-router';
-import { Timestamp, addDoc, collection, doc, getDoc, onSnapshot, orderBy, query } from 'firebase/firestore';
+
 
 import Loader from '../../components/loader/Loader';
 import Layout from '../../components/layout/Layout';
@@ -20,7 +20,7 @@ function BlogInfo() {
   const getAllBlogs = async () => {
     setloading(true);
     try {
-      const productTemp = await getDoc(doc(fireDb, "blogPost", params.id))
+      const productTemp = await getDoc(doc( "blogPost", params.id))
       if (productTemp.exists()) {
         setGetBlogs(productTemp.data());
       } else {
@@ -48,7 +48,7 @@ function BlogInfo() {
   const [commentText, setCommentText] = useState('');
 
   const addComment = async () => {
-    const commentRef = collection(fireDb, "blogPost/" + `${params.id}/` + "comment")
+    const commentRef = collection( "blogPost/" + `${params.id}/` + "comment")
     try {
       await addDoc(
         commentRef, {
