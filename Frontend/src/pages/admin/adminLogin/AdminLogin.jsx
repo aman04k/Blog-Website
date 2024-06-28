@@ -124,6 +124,7 @@ const LoginForm = ({ email, setEmail, password, setPassword, login, setIsForgotP
             <Input
                 type="email"
                 label="Email"
+                placeholder="Enter your email"
                 name="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -134,6 +135,7 @@ const LoginForm = ({ email, setEmail, password, setPassword, login, setIsForgotP
             <Input
                 type="password"
                 label="Password"
+                placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
