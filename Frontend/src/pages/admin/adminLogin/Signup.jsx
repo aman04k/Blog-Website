@@ -118,6 +118,7 @@ export default function Signup() {
                             <Input
                                 type="text"
                                 label="First Name"
+                                placeholder="Enter your first name"
                                 value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
                                 required
@@ -128,6 +129,7 @@ export default function Signup() {
                             <Input
                                 type="text"
                                 label="Last Name"
+                                placeholder="Enter your last Name"
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
                                 required
@@ -138,6 +140,7 @@ export default function Signup() {
                             <Input
                                 type="email"
                                 label="Email"
+                                placeholder="Enter your Email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 required
@@ -148,6 +151,7 @@ export default function Signup() {
                             <Input
                                 type="password"
                                 label="Password"
+                                placeholder="Enter your password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
@@ -159,6 +163,7 @@ export default function Signup() {
                                 type="password"
                                 label="Confirm Password"
                                 value={confirmPassword}
+                                placeholder="Enter your comfirm password"
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 required
                                 size="lg"
