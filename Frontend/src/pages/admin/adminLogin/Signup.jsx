@@ -115,57 +115,67 @@ export default function Signup() {
                 <CardBody>
                     <form className="flex flex-col gap-4">
                         <div>
+                            <label className="block mb-2 text-sm font-medium text-gray-700">
+                                First Name<span className="text-red-500">*</span>
+                            </label>
                             <Input
                                 type="text"
-                                label="First Name"
                                 placeholder="Enter your first name"
                                 value={firstName}
                                 onChange={(e) => setFirstName(e.target.value)}
-                                required
+                                // required
                                 size="lg"
                             />
                         </div>
                         <div>
+                            <label className="block mb-2 text-sm font-medium text-gray-700">
+                                Last Name<span className="text-red-500">*</span>
+                            </label>
                             <Input
                                 type="text"
-                                label="Last Name"
-                                placeholder="Enter your last Name"
+                                placeholder="Enter your last name"
                                 value={lastName}
                                 onChange={(e) => setLastName(e.target.value)}
-                                required
+                                // required
                                 size="lg"
                             />
                         </div>
                         <div>
+                            <label className="block mb-2 text-sm font-medium text-gray-700">
+                                Email<span className="text-red-500">*</span>
+                            </label>
                             <Input
                                 type="email"
-                                label="Email"
-                                placeholder="Enter your Email"
+                                placeholder="Enter your email"
                                 value={email}
                                 onChange={(e) => setEmail(e.target.value)}
-                                required
+                                // required
                                 size="lg"
                             />
                         </div>
                         <div>
+                            <label className="block mb-2 text-sm font-medium text-gray-700">
+                                Password<span className="text-red-500">*</span>
+                            </label>
                             <Input
                                 type="password"
-                                label="Password"
                                 placeholder="Enter your password"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
-                                required
+                                // required
                                 size="lg"
                             />
                         </div>
                         <div>
+                            <label className="block mb-2 text-sm font-medium text-gray-700">
+                                Confirm Password<span className="text-red-500">*</span>
+                            </label>
                             <Input
                                 type="password"
-                                label="Confirm Password"
-                                value={confirmPassword}
                                 placeholder="Enter your confirm password"
+                                value={confirmPassword}
                                 onChange={(e) => setConfirmPassword(e.target.value)}
-                                required
+                                // required
                                 size="lg"
                             />
                         </div>
