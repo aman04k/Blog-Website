@@ -163,7 +163,7 @@ export default function Signup() {
                                 type="password"
                                 label="Confirm Password"
                                 value={confirmPassword}
-                                placeholder="Enter your comfirm password"
+                                placeholder="Enter your confirm password"
                                 onChange={(e) => setConfirmPassword(e.target.value)}
                                 required
                                 size="lg"
