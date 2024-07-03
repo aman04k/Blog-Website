@@ -17,7 +17,7 @@ export default function SearchDialog() {
     const { mode, searchkey,
         setSearchkey, getAllBlog } = context;
 
-        const navigate = useNavigate();
+    const navigate = useNavigate();
     return (
         <Fragment>
             {/* Search Icon  */}
@@ -48,12 +48,12 @@ export default function SearchDialog() {
                     <div className="flex justify-center flex-wrap  sm:mx-auto sm:mb-2 -mx-2  mt-4 mb-2 ">
                         {getAllBlog.filter((obj) => obj.blogs.title.toLowerCase().includes(searchkey)).map((item, index) => {
                             // console.log(item);
-                            const {thumbnail, date, id} = item
+                            const { thumbnail, date, id } = item
                             return (
                                 <div key={index} className="p-2 sm:w-1/4 w-full " >
                                     <div className=" container mx-auto px-4 bg-gray-200 p-2 rounded-lg ">
                                         {/* Blog Thumbnail  */}
-                                        <img onClick={()=> navigate(`/bloginfo/${id}`)} className="w-20 mb-2 rounded-lg cursor-pointer" src={thumbnail} alt="" />
+                                        <img onClick={() => navigate(`/bloginfo/${id}`)} className="w-20 mb-2 rounded-lg cursor-pointer" src={thumbnail} alt="" />
 
                                         {/* Blog Date  */}
                                         <p className="w-40 text-sm">{date}</p>
