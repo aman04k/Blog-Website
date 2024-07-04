@@ -3,6 +3,7 @@ import express from 'express';
 import { createPost, updatePost, deletePost, getPost, getAllPosts } from '../controller/post-controller.js';
 import { uploadImage, getImage } from '../controller/image-controller.js';
 import { newComment, getComments, deleteComment } from '../controller/comment-controller.js';
+import { newLike, getLikes, deleteLike } from '../controller/like-controller.js';
 import { loginUser, singupUser, logoutUser, forgotPassword, resetPassword } from '../controller/user-controller.js';
 import { authenticateToken, createNewToken } from '../controller/jwt-controller.js';
 
