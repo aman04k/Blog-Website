@@ -15,19 +15,22 @@ export const createPost = async (request, response) => {
 
 export const updatePost = async (request, response) => {
     try {
-        const post = await Post.findById(request.params.id);
+        const postId = request.params.id;
+        const updatedFields = request.body;
+
+        const post = await Post.findByIdAndUpdate(postId, { $set: updatedFields }, { new: true });
 
         if (!post) {
-            response.status(404).json({ msg: 'Post not found' })
+            return response.status(404).json({ msg: 'Post not found' });
         }
 
-        await Post.findByIdAndUpdate(request.params.id, { $set: request.body })
-
-        response.status(200).json('post updated successfully');
+        response.status(200).json('Post updated successfully');
     } catch (error) {
+        console.error('Error updating post:', error);
         response.status(500).json(error);
     }
-}
+};
+
 
 export const deletePost = async (request, response) => {
     try {
