@@ -16,23 +16,38 @@ conn.once('open', () => {
 
 
 export const uploadImage = (request, response) => {
-    if(!request.file) {
+    if (!request.file) {
         return response.status(404).json("File not found");
     }
-        
+
     const imageUrl = `${url}/file/${request.file.filename}`;
 
-    return response.status(200).json(imageUrl);    
+    return response.status(200).json(imageUrl);
 }
 
 export const getImage = async (request, response) => {
-    try {   
-        const file = await gfs.files.findOne({ filename: request.params.filename });
-        // const readStream = gfs.createReadStream(file.filename);
-        // readStream.pipe(response);
+    try {
+        const filename = request.params.filename;
+
+        // Find file metadata in GridFS
+        const file = await gfs.files.findOne({ filename });
+        if (!file) {
+            return response.status(404).json({ msg: "File not found" });
+        }
+
+        console.log('File found:', file);
+
+        // Stream file content back to client
         const readStream = gridfsBucket.openDownloadStream(file._id);
+        readStream.on('error', (error) => {
+            console.error('Error streaming file:', error);
+            response.status(500).json({ msg: 'Error streaming file' });
+        });
         readStream.pipe(response);
+
     } catch (error) {
+        console.error('Error:', error);
         response.status(500).json({ msg: error.message });
     }
-}
+};
+

@@ -15,26 +15,31 @@ function BlogInfo() {
   console.log(mode);
   const { id } = useParams();
   const blog = blogs.find((blog) => blog._id === Number(id));
-  console.log("aman",blog);
+  console.log("aman", blog);
   // console.log(params.id),
 
   const [getBlogs, setGetBlogs] = useState();
 
-  // const getAllBlogs = async () => {
-  //   setloading(true);
-  //   try {
-  //     const productTemp = await getDoc(( "blogPost", params.id))
-  //     if (productTemp.exists()) {
-  //       setGetBlogs(productTemp.data());
-  //     } else {
-  //       console.log("Document does not exist")
-  //     }
-  //     setloading(false)
-  //   } catch (error) {
-  //     console.log(error)
-  //     setloading(false)
-  //   }
-  // }
+
+  // COMMENT BOX => OPEN
+
+  const getAllBlogs = async () => {
+    setloading(true);
+    try {
+      const productTemp = await getDoc(("blogPost", params.id))
+      if (productTemp.exists()) {
+        setGetBlogs(productTemp.data());
+      } else {
+        console.log("Document does not exist")
+      }
+      setloading(false)
+    } catch (error) {
+      console.log(error)
+      setloading(false)
+    }
+  }
+  // COMMENT BOX => CLOSE
+
 
   useEffect(() => {
     setGetBlogs(blog);
@@ -48,53 +53,59 @@ function BlogInfo() {
   const [fullName, setFullName] = useState("");
   const [commentText, setCommentText] = useState("");
 
-  // const addComment = async () => {
-  //   const commentRef = collection("blogPost/" + `${params.id}/` + "comment");
-  //   try {
-  //     await addDoc(commentRef, {
-  //       fullName,
-  //       commentText,
-  //       time: Timestamp.now(),
-  //       date: new Date().toLocaleString("en-US", {
-  //         month: "short",
-  //         day: "2-digit",
-  //         year: "numeric",
-  //       }),
-  //     });
-  //     toast.success("Comment Add Successfully");
-  //     setFullName("");
-  //     setCommentText("");
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
 
-  // const [allComment, setAllComment] = useState([]);
 
-  // const getcomment = async () => {
-  //   try {
-  //     const q = query(
-  //       collection(fireDb, "blogPost/" + `${params.id}/` + "comment/"),
-  //       orderBy("time")
-  //     );
-  //     const data = onSnapshot(q, (QuerySnapshot) => {
-  //       let productsArray = [];
-  //       QuerySnapshot.forEach((doc) => {
-  //         productsArray.push({ ...doc.data(), id: doc.id });
-  //       });
-  //       setAllComment(productsArray);
-  //       console.log(productsArray);
-  //     });
-  //     return () => data;
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  // COMMENT BOX=>OPEN
 
-  // useEffect(() => {
-  //   getcomment();
-  //   window.scrollTo(0, 0);
-  // }, []);
+  const addComment = async () => {
+    const commentRef = collection("blogPost/" + `${params.id}/` + "comment");
+    try {
+      await addDoc(commentRef, {
+        fullName,
+        commentText,
+        time: Timestamp.now(),
+        date: new Date().toLocaleString("en-US", {
+          month: "short",
+          day: "2-digit",
+          year: "numeric",
+        }),
+      });
+      toast.success("Comment Add Successfully");
+      setFullName("");
+      setCommentText("");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const [allComment, setAllComment] = useState([]);
+
+  const getcomment = async () => {
+    try {
+      const q = query(
+        collection(fireDb, "blogPost/" + `${params.id}/` + "comment/"),
+        orderBy("time")
+      );
+      const data = onSnapshot(q, (QuerySnapshot) => {
+        let productsArray = [];
+        QuerySnapshot.forEach((doc) => {
+          productsArray.push({ ...doc.data(), id: doc.id });
+        });
+        setAllComment(productsArray);
+        console.log(productsArray);
+      });
+      return () => data;
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getcomment();
+    window.scrollTo(0, 0);
+  }, []);
+
+  //  COMMENT BOX => CLOSE
 
   return (
     <Layout>
@@ -123,20 +134,18 @@ function BlogInfo() {
                 </p>
               </div>
               <div
-                className={`border-b mb-5 ${
-                  mode === "dark" ? "border-gray-600" : "border-gray-400"
-                }`}
+                className={`border-b mb-5 ${mode === "dark" ? "border-gray-600" : "border-gray-400"
+                  }`}
               />
 
               {/* blog Content  */}
               <div className="content">
                 <div
                   className={`[&> h1]:text-[32px] [&>h1]:font-bold  [&>h1]:mb-2.5
-                  ${
-                    mode === "dark"
+                  ${mode === "dark"
                       ? "[&>h1]:text-[#ff4d4d]"
                       : "[&>h1]:text-black"
-                  }
+                    }
 
                   [&>h2]:text-[24px] [&>h2]:font-bold [&>h2]:mb-2.5
                   ${mode === "dark" ? "[&>h2]:text-white" : "[&>h2]:text-black"}
@@ -154,11 +163,10 @@ function BlogInfo() {
                   ${mode === "dark" ? "[&>h6]:text-white" : "[&>h6]:text-black"}
 
                   [&>p]:text-[16px] [&>p]:mb-1.5
-                  ${
-                    mode === "dark"
+                  ${mode === "dark"
                       ? "[&>p]:text-[#7efff5]"
                       : "[&>p]:text-black"
-                  }
+                    }
 
                   [&>ul]:list-disc [&>ul]:mb-2
                   ${mode === "dark" ? "[&>ul]:text-white" : "[&>ul]:text-black"}
@@ -178,14 +186,19 @@ function BlogInfo() {
           )}
         </div>
 
-        {/*<Comment
+
+
+        {/* COMMENT BOX  => COMMENT COX */}
+
+        <Comment
           addComment={addComment}
           commentText={commentText}
           setcommentText={setCommentText}
           allComment={allComment}
           fullName={fullName}
           setFullName={setFullName}
-        />*/}
+        />
+
       </section>
     </Layout>
   );

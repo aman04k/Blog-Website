@@ -3,20 +3,19 @@ import { GridFsStorage } from 'multer-gridfs-storage';
 
 const storage = new GridFsStorage({
     url: `mongodb+srv://system:system@cluster0.4sl5ce8.mongodb.net/system-db`,
-    options: { useNewUrlParser: true },
-    file: (request, file) => {
-        const match = ["image/png", "image/jpg"];
+    options: { useNewUrlParser: true, useUnifiedTopology: true },
+    file: (req, file) => {
+        const match = ["image/png", "image/jpeg", "image/jpg"];
 
-        if (match.indexOf(file.memeType) === -1) {
+        if (match.indexOf(file.mimetype) === -1) {
             return `${Date.now()}-blog-${file.originalname}`;
-
         }
 
         return {
             bucketName: "photos",
             filename: `${Date.now()}-blog-${file.originalname}`
-        }
+        };
     }
 });
 
-export default multer({ storage }); 
+export default multer({ storage });
