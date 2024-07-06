@@ -15,6 +15,7 @@ function BlogInfo() {
   console.log(mode);
   const { id } = useParams();
   const blog = blogs.find((blog) => blog._id === Number(id));
+  console.log("aman",blog);
   // console.log(params.id),
 
   const [getBlogs, setGetBlogs] = useState();
