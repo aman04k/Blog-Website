@@ -10,7 +10,7 @@ function BlogPostCard() {
   const { blogs, setBlogs } = useContext(blogContext);
 
   const { mode, getAllBlog } = context;
-  // console.log(getAllBlog)
+  console.log("blogs",blogs)
 
   const navigate = useNavigate();
 
@@ -25,7 +25,7 @@ function BlogPostCard() {
               <>
                 {" "}
                 {blogs.map((item, index) => {
-                  const { thumbnail, date, _id } = item;
+                  const { imageUrl, date, _id,content } = item;
                   return (
                     <NavLink
                       to={`/bloginfo/${item._id}`}
@@ -44,11 +44,11 @@ function BlogPostCard() {
                ${mode === "dark" ? "shadow-gray-700" : "shadow-xl"}
                rounded-xl overflow-hidden`}
                       >
-                        {/* Blog Thumbnail  */}
+                        {/* Blog imageUrl  */}
                         <img
                           onClick={() => navigate(`/bloginfo/${_id}`)}
                           className=" w-full"
-                          src={thumbnail}
+                          src={imageUrl}
                           alt="blog"
                         />
 
@@ -90,8 +90,7 @@ function BlogPostCard() {
                                   : " rgb(30, 41, 59)",
                             }}
                           >
-                            Photo booth fam kinfolk cold-pressed sriracha
-                            leggings jianbing microdosing tousled waistcoat.
+                           {content}
                           </p>
                         </div>
                       </div>

@@ -15,7 +15,6 @@ function BlogInfo() {
   console.log(mode);
   const { id } = useParams();
   const blog = blogs.find((blog) => blog._id === Number(id));
-  console.log(blog);
   // console.log(params.id),
 
   const [getBlogs, setGetBlogs] = useState();
@@ -116,7 +115,7 @@ function BlogInfo() {
                   style={{ color: mode === "dark" ? "white" : "black" }}
                   className=" text-xl md:text-2xl lg:text-2xl font-semibold"
                 >
-                  {getBlogs?.blogs?.title}
+                  {getBlogs?.title}
                 </h1>
                 <p style={{ color: mode === "dark" ? "white" : "black" }}>
                   {getBlogs?.date}
