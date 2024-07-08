@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
     Card,
     CardHeader,
@@ -20,6 +20,34 @@ export default function AdminLogin() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
+    const [userProfile, setUserProfile] = useState(null); // State to store user profile data
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchUserProfile();
+        }
+    }, [isLoggedIn]);
+
+    const fetchUserProfile = async () => {
+        try {
+            const response = await fetch('https://api.example.com/user/profile', {
+                method: 'GET',
+                headers: {
+                    // Add any necessary headers here, such as authentication tokens
+                    'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
+                    'Content-Type': 'application/json'
+                },
+            });
+            if (!response.ok) {
+                throw new Error('Failed to fetch profile data');
+            }
+            const data = await response.json();
+            setUserProfile(data); // Store profile data in state
+        } catch (error) {
+            console.error('Error fetching user profile:', error.message);
+            toast.error('Failed to fetch user profile');
+        }
+    };
 
     const login = async () => {
         // Example validation logic, replace with your actual login logic
@@ -31,6 +59,10 @@ export default function AdminLogin() {
         setIsLoggedIn(true);
         navigate('/profile'); // Redirect to profile page after login
     };
+
+
+
+    
 
     const cardStyle = {
         background: isLoggedIn ? 'rgb(30, 41, 59)' : 'rgb(226, 232, 240)'
@@ -81,6 +113,7 @@ export default function AdminLogin() {
                                 setIsEditingProfile={setIsEditingProfile}
                                 textStyle={textStyle}
                                 buttonStyle={buttonStyle}
+                                userProfile={userProfile}
                             />
                         ) : (
                             <Profile
@@ -88,6 +121,7 @@ export default function AdminLogin() {
                                 logout={() => setIsLoggedIn(false)}
                                 textStyle={textStyle}
                                 buttonStyle={buttonStyle}
+                                userProfile={userProfile}
                             />
                         )
                     ) : (
@@ -98,7 +132,6 @@ export default function AdminLogin() {
                             setPassword={setPassword}
                             login={login}
                             setIsForgotPasswordOpen={setIsForgotPasswordOpen}
-                            textStyle={textStyle}
                             buttonStyle={buttonStyle}
                         />
                     )}
@@ -118,7 +151,7 @@ export default function AdminLogin() {
     );
 }
 
-const LoginForm = ({ email, setEmail, password, setPassword, login, setIsForgotPasswordOpen, textStyle, buttonStyle }) => (
+const LoginForm = ({ email, setEmail, password, setPassword, login, setIsForgotPasswordOpen, buttonStyle }) => (
     <form className="flex flex-col gap-4">
         <div>
             <Input
@@ -129,6 +162,7 @@ const LoginForm = ({ email, setEmail, password, setPassword, login, setIsForgotP
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="mt-[-5px]"  // Apply Tailwind CSS margin-top of -5px
             />
         </div>
         <div>
@@ -160,3 +194,4 @@ const LoginForm = ({ email, setEmail, password, setPassword, login, setIsForgotP
         </Button>
     </form>
 );
+

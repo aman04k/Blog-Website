@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Input, Button } from "@material-tailwind/react";
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { baseUrl } from '../../../../config'; // Replace with your actual base URL
 
 // Default profile icon URL
 const defaultProfileIcon = 'https://example.com/default-profile-icon.png';
@@ -32,11 +33,33 @@ export default function ProfileEdit() {
         }));
     };
 
-    const handleProfileSubmit = (e) => {
+    const handleProfileSubmit = async (e) => {
         e.preventDefault();
-        localStorage.setItem("profileData", JSON.stringify(profileData));
-        toast.success("Profile updated successfully");
-        navigate('/profile'); // Navigate back to profile page after saving
+
+        try {
+            const formData = new FormData();
+            formData.append('firstName', profileData.firstName);
+            formData.append('lastName', profileData.lastName);
+            formData.append('birthdate', profileData.birthdate);
+            formData.append('phone', profileData.phone);
+            formData.append('email', profileData.email);
+            formData.append('profilePicture', profileData.profilePicture);
+
+            const response = await fetch(`${baseUrl}/api/profile`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            if (!response.ok) {
+                throw new Error('Failed to save profile');
+            }
+
+            toast.success('Profile updated successfully');
+            navigate('/profile'); // Navigate back to profile page after saving
+        } catch (error) {
+            console.error('Error saving profile:', error);
+            toast.error('Failed to save profile');
+        }
     };
 
     const formStyle = {
