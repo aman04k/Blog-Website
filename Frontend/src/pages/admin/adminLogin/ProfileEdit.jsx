@@ -191,7 +191,6 @@ export default function ProfileEdit() {
             <div>
                 <Input
                     type="email"
-                    label="Email"
                     placeholder='Enter your email'
                     name="email"
                     value={profileData.email}
