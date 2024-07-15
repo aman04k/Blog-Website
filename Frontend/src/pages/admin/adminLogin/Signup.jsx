@@ -7,7 +7,7 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // Import Link from react-router-dom
 import toast from "react-hot-toast";
 import { baseUrl } from "../../../../config";
 
@@ -43,7 +43,7 @@ export default function Signup() {
         body: JSON.stringify(profileData),
       });
 
-      const res = response.json();
+      const res = await response.json();
 
       console.log(res);
       //   if (response.ok) {
@@ -60,24 +60,24 @@ export default function Signup() {
 
   const handleGoogleSignup = () => {
     toast.success("Google Signup successful");
-    navigate("/profile");
-  };
-
-  const goToHome = () => {
-    navigate("/");
+    navigate("/"); // Navigate to home page after Google signup
   };
 
   const cardStyle = {
     background: "#dcdcdc",
     borderRadius: "8px",
     boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
-    width: "90%",
-    maxWidth: "600px",
+    width: "100%", // Adjusted width to 100% for full-width
+    maxWidth: "800px", // Increased maxWidth for larger box
+    position: "relative", // Add relative positioning for the card
+    padding: "20px", // Added padding for better spacing inside the card
+    margin: "20px", // Added margin for spacing from the edges
   };
 
   const headerStyle = {
     background: "#1d2951",
     color: "white",
+    padding: "15px", // Added padding to header for better appearance
   };
 
   const textStyle = {
@@ -92,28 +92,35 @@ export default function Signup() {
     cursor: "pointer",
     marginTop: "10px",
     boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+    marginRight: "10px", // Added margin-right to buttons for spacing
   };
 
-  const homeButtonStyle = {
+  const homeLinkStyle = {
     position: "absolute",
-    top: "20px",
-    right: "20px",
-    background: "#FF5722",
-    color: "white",
-    padding: "10px 20px",
-    borderRadius: "5px",
-    cursor: "pointer",
-    boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.1)",
+    bottom: "5px", // Adjust bottom positioning as needed
+    left: "15px", // Align to the right side of the card
+    color: "#007BFF", // Blue color
+    textDecoration: "None", // Underline effect
+    cursor: "pointer", // Pointer cursor for interaction
+    fontSize: "1.2rem", // Larger font size
+    padding: "8px 12px", // Padding around the text
+  };
+  const goToAdminLoginStyle = {
+    position: "absolute",
+    bottom: "5px", // Adjust bottom positioning as needed
+    right: "15px", // Align to the right side of the card
+    color: "#007BFF", // Blue color
+    textDecoration: "None", // Underline effect
+    cursor: "pointer", // Pointer cursor for interaction
+    fontSize: "1.2rem", // Larger font size
+    padding: "8px 12px", // Padding around the text
   };
 
   return (
     <div
-      className="flex justify-center items-center h-screen relative"
+      className="flex justify-center items-center h-screen"
       style={{ backgroundColor: "white" }}
     >
-      <Button onClick={goToHome} style={homeButtonStyle}>
-        Home
-      </Button>
       <Card style={cardStyle}>
         <CardHeader
           color="blue"
@@ -196,12 +203,12 @@ export default function Signup() {
             <Button onClick={signup} style={buttonStyle}>
               Sign Up
             </Button>
-            <Button
+            {/* <Button
               onClick={goToAdminLogin}
               style={{ ...buttonStyle, backgroundColor: "#4CAF50" }} // Green background
             >
-              Admin Login
-            </Button>
+              User Login
+            </Button> */}
             <Button
               onClick={handleGoogleSignup}
               style={{ ...buttonStyle, backgroundColor: "#DB4437" }} // Google red background
@@ -209,6 +216,12 @@ export default function Signup() {
               Sign Up with Google
             </Button>
           </form>
+          <Link to="/" style={homeLinkStyle}>
+            Home
+          </Link>
+          <Link to="/AdminLogin" style={goToAdminLoginStyle}>
+                                Login
+                            </Link>
         </CardBody>
       </Card>
     </div>

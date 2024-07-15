@@ -57,12 +57,8 @@ export default function AdminLogin() {
 
         // Simulate successful login
         setIsLoggedIn(true);
-        navigate('/profile'); // Redirect to profile page after login
+        navigate('/'); // Redirect to home page after login
     };
-
-
-
-    
 
     const cardStyle = {
         background: isLoggedIn ? 'rgb(30, 41, 59)' : 'rgb(226, 232, 240)'
@@ -194,4 +190,3 @@ const LoginForm = ({ email, setEmail, password, setPassword, login, setIsForgotP
         </Button>
     </form>
 );
-

@@ -42,23 +42,44 @@ export default function Nav() {
                     Blogs
                 </Link>
             </Typography>
-            <Typography
-                as="li"
-                variant="small"
-                color="blue-gray"
-                className="p-1 font-normal"
-                style={{ color: mode === "dark" ? "white" : "white" }}
-            >
-                {admin ? (
-                    <Link to={"/dashboard"} className="flex items-center">
-                        Profile
-                    </Link>
-                ) : (
+            {admin ? (
+                <>
+                    <Typography
+                        as="li"
+                        variant="small"
+                        color="blue-gray"
+                        className="p-1 font-normal"
+                        style={{ color: mode === "dark" ? "white" : "white" }}
+                    >
+                        <Link to={"/profile"} className="flex items-center">
+                            Profile
+                        </Link>
+                    </Typography>
+                    <Typography
+                        as="li"
+                        variant="small"
+                        color="blue-gray"
+                        className="p-1 font-normal"
+                        style={{ color: mode === "dark" ? "white" : "white" }}
+                    >
+                        <Link to={"/dashboard"} className="flex items-center">
+                            Dashboard
+                        </Link>
+                    </Typography>
+                </>
+            ) : (
+                <Typography
+                    as="li"
+                    variant="small"
+                    color="blue-gray"
+                    className="p-1 font-normal"
+                    style={{ color: mode === "dark" ? "white" : "white" }}
+                >
                     <Link to={"/adminlogin"} className="flex items-center">
                         Login
                     </Link>
-                )}
-            </Typography>
+                </Typography>
+            )}
         </ul>
     );
 
