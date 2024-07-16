@@ -7,7 +7,7 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import { useNavigate, Link } from "react-router-dom"; // Import Link from react-router-dom
+import { useNavigate, Link } from "react-router-dom";
 import toast from "react-hot-toast";
 import { baseUrl } from "../../../../config";
 
@@ -22,6 +22,10 @@ export default function Signup() {
   const signup = async () => {
     if (!firstName || !email || !password || !confirmPassword) {
       return toast.error("All fields are required");
+    }
+
+    if (!email.endsWith("@gmail.com")) {
+      return toast.error("Please enter a valid Gmail address");
     }
 
     if (password !== confirmPassword) {
@@ -45,17 +49,16 @@ export default function Signup() {
 
       const res = await response.json();
 
-      console.log(res);
-      //   if (response.ok) {
-      //     navigate("/profile");
-      //   }
+      if (response.ok) {
+        toast.success("Signup successful");
+        navigate("/adminlogin"); // Navigate to login page after successful signup
+      } else {
+        toast.error(res.message || "Signup failed");
+      }
     } catch (error) {
       console.log(error);
+      toast.error("An error occurred during signup");
     }
-  };
-
-  const goToAdminLogin = () => {
-    navigate("/adminlogin");
   };
 
   const handleGoogleSignup = () => {
@@ -105,6 +108,7 @@ export default function Signup() {
     fontSize: "1.2rem", // Larger font size
     padding: "8px 12px", // Padding around the text
   };
+
   const goToAdminLoginStyle = {
     position: "absolute",
     bottom: "5px", // Adjust bottom positioning as needed
@@ -144,7 +148,6 @@ export default function Signup() {
                 placeholder="Enter your first name"
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                // required
                 size="lg"
               />
             </div>
@@ -157,20 +160,18 @@ export default function Signup() {
                 placeholder="Enter your last name"
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                // required
                 size="lg"
               />
             </div>
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-700">
-                Email<span className="text-red-500">*</span>
+                Gmail<span className="text-red-500">*</span>
               </label>
               <Input
                 type="email"
-                placeholder="Enter your email"
+                placeholder="Enter your Gmail"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                // required
                 size="lg"
               />
             </div>
@@ -183,7 +184,6 @@ export default function Signup() {
                 placeholder="Enter your password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                // required
                 size="lg"
               />
             </div>
@@ -196,19 +196,12 @@ export default function Signup() {
                 placeholder="Enter your confirm password"
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                // required
                 size="lg"
               />
             </div>
             <Button onClick={signup} style={buttonStyle}>
               Sign Up
             </Button>
-            {/* <Button
-              onClick={goToAdminLogin}
-              style={{ ...buttonStyle, backgroundColor: "#4CAF50" }} // Green background
-            >
-              User Login
-            </Button> */}
             <Button
               onClick={handleGoogleSignup}
               style={{ ...buttonStyle, backgroundColor: "#DB4437" }} // Google red background
@@ -220,8 +213,8 @@ export default function Signup() {
             Home
           </Link>
           <Link to="/AdminLogin" style={goToAdminLoginStyle}>
-                                Login
-                            </Link>
+            Login
+          </Link>
         </CardBody>
       </Card>
     </div>
