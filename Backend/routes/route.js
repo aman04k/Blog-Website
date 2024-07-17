@@ -4,7 +4,7 @@ import { createPost, updatePost, deletePost, getPost, getAllPosts } from '../con
 import { uploadImage, getImage } from '../controller/image-controller.js';
 import { newComment, getComments, deleteComment } from '../controller/comment-controller.js';
 import { newLike, getLikes, deleteLike } from '../controller/like-controller.js';
-import { loginUser, singupUser, logoutUser, forgotPassword, resetPassword } from '../controller/user-controller.js';
+import { loginUser, signupUser, logoutUser, forgotPassword, resetPassword } from '../controller/user-controller.js';
 import { authenticateToken, createNewToken } from '../controller/jwt-controller.js';
 
 import upload from '../utils/upload.js';
@@ -12,7 +12,7 @@ import upload from '../utils/upload.js';
 const router = express.Router();
 
 router.post('/login', loginUser);
-router.post('/signup', singupUser);
+router.post('/signup', signupUser);
 router.post('/logout', logoutUser);
 router.post('/forgotPassword', forgotPassword);
 router.post('/resetPassword', resetPassword);
