@@ -11,22 +11,21 @@ dotenv.config();
 
 export const signupUser = async (request, response) => {
     try {
+        // const salt = await bcrypt.genSalt();
+        // const hashedPassword = await bcrypt.hash(request.body.password, salt);
         const hashedPassword = await bcrypt.hash(request.body.password, 10);
 
-        const user = {
-            email: request.body.email,
-            password: hashedPassword
-        };
+        const user = { username: request.body.username, email: request.body.email, password: hashedPassword }
 
         const newUser = new User(user);
         await newUser.save();
 
-        return response.status(200).json({ msg: 'Signup successful' });
+        return response.status(200).json({ msg: 'Signup successfull' });
     } catch (error) {
-        console.error('Error while signing up user:', error);
         return response.status(500).json({ msg: 'Error while signing up user' });
     }
-};
+}
+    
 
 
 
