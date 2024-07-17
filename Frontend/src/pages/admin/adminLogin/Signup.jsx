@@ -14,7 +14,7 @@ import { baseUrl } from "../../../../config";
 export default function Signup() {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [userName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -153,12 +153,12 @@ export default function Signup() {
             </div>
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-700">
-                Last Name<span className="text-red-500">*</span>
+                User Name<span className="text-red-500">*</span>
               </label>
               <Input
                 type="text"
                 placeholder="Enter your last name"
-                value={lastName}
+                value={userName}
                 onChange={(e) => setLastName(e.target.value)}
                 size="lg"
               />
