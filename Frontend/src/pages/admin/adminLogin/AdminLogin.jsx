@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import ForgotPassword from "./ForgotPassword";
 import Profile from "./Profile";
 import ProfileEdit from "./ProfileEdit";
+import { baseUrl } from "../../../../config";
 
 export default function AdminLogin() {
     const navigate = useNavigate();
@@ -20,7 +21,7 @@ export default function AdminLogin() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isEditingProfile, setIsEditingProfile] = useState(false);
     const [isForgotPasswordOpen, setIsForgotPasswordOpen] = useState(false);
-    const [userProfile, setUserProfile] = useState(null); // State to store user profile data
+    const [userProfile, setUserProfile] = useState(null);
 
     useEffect(() => {
         if (isLoggedIn) {
@@ -30,10 +31,9 @@ export default function AdminLogin() {
 
     const fetchUserProfile = async () => {
         try {
-            const response = await fetch('https://api.example.com/user/profile', {
+            const response = await fetch(`${baseUrl}/user/profile`, {
                 method: 'GET',
                 headers: {
-                    // Add any necessary headers here, such as authentication tokens
                     'Authorization': 'Bearer YOUR_ACCESS_TOKEN',
                     'Content-Type': 'application/json'
                 },
@@ -42,7 +42,7 @@ export default function AdminLogin() {
                 throw new Error('Failed to fetch profile data');
             }
             const data = await response.json();
-            setUserProfile(data); // Store profile data in state
+            setUserProfile(data);
         } catch (error) {
             console.error('Error fetching user profile:', error.message);
             toast.error('Failed to fetch user profile');
@@ -50,14 +50,37 @@ export default function AdminLogin() {
     };
 
     const login = async () => {
-        // Example validation logic, replace with your actual login logic
         if (!email || !password) {
             return toast.error("Please fill in all fields");
         }
 
-        // Simulate successful login
-        setIsLoggedIn(true);
-        navigate('/'); // Redirect to home page after login
+        const loginData = {
+            email: email,
+            password: password,
+        };
+
+        try {
+            const response = await fetch(`${baseUrl}/login`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(loginData),
+            });
+
+            const res = await response.json();
+
+            if (response.ok) {
+                toast.success("Login successful");
+                setIsLoggedIn(true);
+                navigate('/'); // Redirect to home page after login
+            } else {
+                toast.error(res.message || "Login failed");
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error("An error occurred during login");
+        }
     };
 
     const cardStyle = {
@@ -94,7 +117,7 @@ export default function AdminLogin() {
                     style={headerStyle}
                 >
                     <div className="mb-4 rounded-full border border-white/10 bg-white/10 p-2 text-white">
-                        <div className=" flex justify-center">
+                        <div className="flex justify-center">
                             <img src="https://cdn-icons-png.flaticon.com/128/727/727399.png" className="h-20 w-20" alt="Admin Icon" />
                         </div>
                     </div>
@@ -158,7 +181,7 @@ const LoginForm = ({ email, setEmail, password, setPassword, login, setIsForgotP
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="mt-[-5px]"  // Apply Tailwind CSS margin-top of -5px
+                className="mt-[-5px]"
             />
         </div>
         <div>
