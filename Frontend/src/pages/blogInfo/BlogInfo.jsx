@@ -1,207 +1,88 @@
-import React, { useContext, useEffect, useState } from "react";
-import myContext from "../../context/data/myContext";
-import { useParams } from "react-router";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 
-import Loader from "../../components/loader/Loader";
-import Layout from "../../components/layout/Layout";
-import Comment from "../../components/comment/Comment";
-import toast from "react-hot-toast";
-import { blogContext } from "../../context/data/useBlogData";
-
-function BlogInfo() {
-  const context = useContext(myContext);
-  const { mode } = context;
-  const { blogs } = useContext(blogContext);
-  console.log(mode);
+const BlogInfo = () => {
   const { id } = useParams();
-  const blog = blogs.find((blog) => blog._id === Number(id));
-  console.log("aman", blog);
-  // console.log(params.id),
+  const [blog, setBlog] = useState(null);
+  const [comments, setComments] = useState([]);
 
-  const [getBlogs, setGetBlogs] = useState();
-
-
-  // COMMENT BOX => OPEN
-
-  const getAllBlogs = async () => {
-    setloading(true);
+  const fetchBlog = async () => {
     try {
-      const productTemp = await getDoc(("blogPost", params.id))
-      if (productTemp.exists()) {
-        setGetBlogs(productTemp.data());
-      } else {
-        console.log("Document does not exist")
-      }
-      setloading(false)
-    } catch (error) {
-      console.log(error)
-      setloading(false)
-    }
-  }
-  // COMMENT BOX => CLOSE
-
-
-  useEffect(() => {
-    setGetBlogs(blog);
-  }, [blog]);
-
-  //* Create markup function
-  function createMarkup(c) {
-    return { __html: c };
-  }
-
-  const [fullName, setFullName] = useState("");
-  const [commentText, setCommentText] = useState("");
-
-
-
-  // COMMENT BOX=>OPEN
-
-  const addComment = async () => {
-    const commentRef = collection("blogPost/" + `${params.id}/` + "comment");
-    try {
-      await addDoc(commentRef, {
-        fullName,
-        commentText,
-        time: Timestamp.now(),
-        date: new Date().toLocaleString("en-US", {
-          month: "short",
-          day: "2-digit",
-          year: "numeric",
-        }),
-      });
-      toast.success("Comment Add Successfully");
-      setFullName("");
-      setCommentText("");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const [allComment, setAllComment] = useState([]);
-
-  const getcomment = async () => {
-    try {
-      const q = query(
-        collection(fireDb, "blogPost/" + `${params.id}/` + "comment/"),
-        orderBy("time")
+      const response = await axios.get(
+        `https://jsonplaceholder.typicode.com/posts/${id}`
       );
-      const data = onSnapshot(q, (QuerySnapshot) => {
-        let productsArray = [];
-        QuerySnapshot.forEach((doc) => {
-          productsArray.push({ ...doc.data(), id: doc.id });
-        });
-        setAllComment(productsArray);
-        console.log(productsArray);
-      });
-      return () => data;
+      console.log("Fetched blog:", response.data);
+      setBlog(response.data);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching blog:", error);
+    }
+  };
+
+  const fetchComments = async () => {
+    try {
+      const response = await axios.get(
+        `https://jsonplaceholder.typicode.com/posts/${id}/comments`
+      );
+      console.log("Fetched comments:", response.data);
+      setComments(response.data);
+    } catch (error) {
+      console.error("Error fetching comments:", error);
     }
   };
 
   useEffect(() => {
-    getcomment();
-    window.scrollTo(0, 0);
-  }, []);
+    fetchBlog();
+    fetchComments();
+  }, [id]);
 
-  //  COMMENT BOX => CLOSE
+  if (!blog) return <div>Loading...</div>;
+
+  const imageUrl = `https://via.placeholder.com/800?text=Image+${id}`;
 
   return (
-    <Layout>
-      <section className="rounded-lg h-full overflow-hidden max-w-4xl mx-auto px-4 ">
-        <div className=" py-4 lg:py-8">
-          {false ? (
-            <Loader />
+    <div className="blog-info-container">
+      {/* <img
+        src={imageUrl}
+        alt={`Image for blog ${id}`}
+        className="w-full h-64 object-cover"
+        onError={(e) => {
+          e.target.onerror = null;
+          e.target.src = "https://via.placeholder.com/800?text=Image+Not+Found";
+        }}
+      /> */}
+
+      <img
+        src={imageUrl}
+        alt={`Image for blog ${id}`} // Alt text for accessibility
+        className="w-full h-64 object-cover" // Styling for width, height, and object fit
+        onError={(e) => {
+          e.target.onerror = null; // Prevents infinite loop if placeholder fails
+          e.target.src = "https://via.placeholder.com/800?text=Image+Not+Found"; // Placeholder image
+        }}
+      />
+
+      <div className="p-6">
+        <h1 className="text-3xl font-bold mb-3">{blog.title}</h1>
+        <p className="leading-relaxed mb-6">{blog.body}</p>
+
+        <div>
+          <h2 className="text-2xl font-bold mb-3">Comments</h2>
+          {comments.length === 0 ? (
+            <p>No comments available.</p>
           ) : (
-            <div>
-              {/* Thumbnail  */}
-              <img
-                alt="content"
-                className="mb-3 rounded-lg h-full w-full"
-                src={getBlogs?.imageUrl}
-              />
-              {/* title And date  */}
-              <div className="flex justify-between items-center mb-3">
-                <h1
-                  style={{ color: mode === "dark" ? "white" : "black" }}
-                  className=" text-xl md:text-2xl lg:text-2xl font-semibold"
-                >
-                  {getBlogs?.title}
-                </h1>
-                <p style={{ color: mode === "dark" ? "white" : "black" }}>
-                  {getBlogs?.date}
-                </p>
+            comments.map((comment) => (
+              <div key={comment.id} className="mb-4">
+                <h3 className="font-semibold">{comment.name}</h3>
+                <p>{comment.body}</p>
+                <p className="text-sm text-gray-600">By {comment.email}</p>
               </div>
-              <div
-                className={`border-b mb-5 ${mode === "dark" ? "border-gray-600" : "border-gray-400"
-                  }`}
-              />
-
-              {/* blog Content  */}
-              <div className="content">
-                <div
-                  className={`[&> h1]:text-[32px] [&>h1]:font-bold  [&>h1]:mb-2.5
-                  ${mode === "dark"
-                      ? "[&>h1]:text-[#ff4d4d]"
-                      : "[&>h1]:text-black"
-                    }
-
-                  [&>h2]:text-[24px] [&>h2]:font-bold [&>h2]:mb-2.5
-                  ${mode === "dark" ? "[&>h2]:text-white" : "[&>h2]:text-black"}
-
-                  [&>h3]:text-[18.72] [&>h3]:font-bold [&>h3]:mb-2.5
-                  ${mode === "dark" ? "[&>h3]:text-white" : "[&>h3]:text-black"}
-
-                  [&>h4]:text-[16px] [&>h4]:font-bold [&>h4]:mb-2.5
-                  ${mode === "dark" ? "[&>h4]:text-white" : "[&>h4]:text-black"}
-
-                  [&>h5]:text-[13.28px] [&>h5]:font-bold [&>h5]:mb-2.5
-                  ${mode === "dark" ? "[&>h5]:text-white" : "[&>h5]:text-black"}
-
-                  [&>h6]:text-[10px] [&>h6]:font-bold [&>h6]:mb-2.5
-                  ${mode === "dark" ? "[&>h6]:text-white" : "[&>h6]:text-black"}
-
-                  [&>p]:text-[16px] [&>p]:mb-1.5
-                  ${mode === "dark"
-                      ? "[&>p]:text-[#7efff5]"
-                      : "[&>p]:text-black"
-                    }
-
-                  [&>ul]:list-disc [&>ul]:mb-2
-                  ${mode === "dark" ? "[&>ul]:text-white" : "[&>ul]:text-black"}
-
-                  [&>ol]:list-decimal [&>li]:mb-10
-                  ${mode === "dark" ? "[&>ol]:text-white" : "[&>ol]:text-black"}
-
-                  [&>li]:list-decimal [&>ol]:mb-2
-                  ${mode === "dark" ? "[&>ol]:text-white" : "[&>ol]:text-black"}
-
-                  [&>img]:rounded-lg
-                  `}
-                  dangerouslySetInnerHTML={createMarkup(getBlogs?.content)}
-                ></div>
-              </div>
-            </div>
+            ))
           )}
         </div>
-
-
-
-        {/* COMMENT BOX  => COMMENT COX */}
-
-        <Comment
-          addComment={addComment}
-          commentText={commentText}
-          setcommentText={setCommentText}
-          allComment={allComment}
-          fullName={fullName}
-          setFullName={setFullName}
-        />
-
-      </section>
-    </Layout>
+      </div>
+    </div>
   );
-}
+};
 
 export default BlogInfo;

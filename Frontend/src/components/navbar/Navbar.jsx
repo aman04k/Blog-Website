@@ -7,9 +7,9 @@ import {
     Avatar,
     Collapse,
 } from "@material-tailwind/react";
-import { AiOutlineSearch } from "react-icons/ai";
 import myContext from "../../context/data/myContext";
 import SearchDialog from "../searchDialog/SearchDialog";
+import CreatePost from "../CreatePost/CreatePost";
 
 export default function Nav() {
     const [openNav, setOpenNav] = useState(false);
@@ -80,6 +80,17 @@ export default function Nav() {
                     </Link>
                 </Typography>
             )}
+            <Typography
+                as="li"
+                variant="small"
+                color="blue-gray"
+                className="p-1 font-normal"
+                style={{ color: mode === "dark" ? "white" : "white" }}
+            >
+                <Link to={"/createpost"} className="flex items-center">
+                    Create Post
+                </Link>
+            </Typography>
         </ul>
     );
 
@@ -145,7 +156,7 @@ export default function Nav() {
                             </div>
                         )}
 
-                        {/* dark And Light Button */}
+                        {/* Dark And Light Button */}
                         <div>
                             <IconButton
                                 onClick={toggleMode}

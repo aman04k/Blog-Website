@@ -1,0 +1,16 @@
+/* src/pages/blogInfo/BlogInfo.css */
+.blog-info-container {
+    padding: 20px;
+    background-color: #f5f5f5;
+  }
+  
+  .blog-info-container img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .blog-info-container .p-6 {
+    padding: 20px;
+  }
+  

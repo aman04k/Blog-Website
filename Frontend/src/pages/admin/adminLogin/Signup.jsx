@@ -14,7 +14,7 @@ import { baseUrl } from "../../../../config";
 export default function Signup() {
   const navigate = useNavigate();
   const [firstName, setFirstName] = useState("");
-  const [userName, setLastName] = useState("");
+  const [userName, setUserName] = useState(""); // Changed state variable name
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -33,7 +33,7 @@ export default function Signup() {
     }
 
     const profileData = {
-      username: firstName,
+      username: userName, // Use userName for profileData
       email: email,
       password: password,
     };
@@ -48,8 +48,12 @@ export default function Signup() {
       });
 
       const res = await response.json();
+      console.log('response', res); // Log the response object to console
 
       if (response.ok) {
+        // Store user data in local storage
+        localStorage.setItem("userData", JSON.stringify(profileData));
+
         toast.success("Signup successful");
         navigate("/adminlogin"); // Navigate to login page after successful signup
       } else {
@@ -81,10 +85,6 @@ export default function Signup() {
     background: "#1d2951",
     color: "white",
     padding: "15px", // Added padding to header for better appearance
-  };
-
-  const textStyle = {
-    color: "#333",
   };
 
   const buttonStyle = {
@@ -150,16 +150,16 @@ export default function Signup() {
                 onChange={(e) => setFirstName(e.target.value)}
                 size="lg"
               />
-            </div>
+            </div> 
             <div>
               <label className="block mb-2 text-sm font-medium text-gray-700">
                 User Name<span className="text-red-500">*</span>
               </label>
               <Input
                 type="text"
-                placeholder="Enter your last name"
+                placeholder="Enter your user name"
                 value={userName}
-                onChange={(e) => setLastName(e.target.value)}
+                onChange={(e) => setUserName(e.target.value)} // Changed setLastName to setUserName
                 size="lg"
               />
             </div>
@@ -212,7 +212,7 @@ export default function Signup() {
           <Link to="/" style={homeLinkStyle}>
             Home
           </Link>
-          <Link to="/AdminLogin" style={goToAdminLoginStyle}>
+          <Link to="/adminlogin" style={goToAdminLoginStyle}>
             Login
           </Link>
         </CardBody>
