@@ -12,7 +12,7 @@ import ForgotPassword from './pages/admin/adminLogin/ForgotPassword';
 import Signup from './pages/admin/adminLogin/Signup';
 import Dashboard from './pages/admin/dashboard/Dashboard';
 import CreateBlog from './pages/admin/createBlog/CreateBlog';
-import CreatePost from './components/createPost/CreatePost';
+import CreatePost from './components/CreatePost/CreatePost';
 import MyState from './context/data/myState';
 import { Toaster } from 'react-hot-toast';
 import { BlogProvider } from './context/data/useBlogData';
