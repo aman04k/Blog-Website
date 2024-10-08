@@ -2,7 +2,8 @@
 
 A simple and responsive blog website built using **React.js**, **Node.js**, **Express**, and **MongoDB**. The platform allows users to create, edit, and delete blog posts, as well as view and comment on posts.
 
-![Blog Website Preview](https://via.placeholder.com/800x400.png?text=Blog+Website+Screenshot) <!-- Replace with actual image URL -->
+<!--![Blog Website Preview](https://via.placeholder.com/800x400.png?text=Blog+Website+Screenshot) -->
+<img src="blog.jpg"/><!-- Replace with actual image URL -->
 
 ## ✨ Features
 
